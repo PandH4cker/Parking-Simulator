@@ -208,6 +208,20 @@ int simulate()
 			switch(event.type)
 			{
 				case SDL_MOUSEBUTTONDOWN:
+					if(event.button.button == SDL_BUTTON_LEFT)
+					{
+						if(!fluideSelect && !chargeSelect && !exitSelect)
+						{
+							if(isInRegion(event.button.x, event.button.y,
+														xExitButton, xExitButton + BUTTON_WIDTH,
+														yExitButton, yExitButton + BUTTON_HEIGHT))
+							{
+								fluideSelect = false;
+								chargeSelect = false;
+								exitSelect = true;
+							}
+						}
+					}
 					break;
 
 				case SDL_MOUSEBUTTONUP:
@@ -220,6 +234,8 @@ int simulate()
 					break;
 			}
 		}
+
+		if(exitSelect) goto destroyer;
 
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
@@ -240,6 +256,8 @@ int simulate()
 			SDL_Delay((int)(DELAY_TIME - frameTime));
 	}
 
+
+	destroyer:
 	SDL_DestroyTexture(exitButton);
 	SDL_DestroyTexture(chargeButton);
 	SDL_DestroyTexture(fluideButton);
