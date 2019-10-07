@@ -206,6 +206,18 @@ int simulate()
 		return EXIT_FAILURE;
 	}
 
+	int xFirstLeftTopWall = 4;
+	int yFirstLeftTopWall = 100;
+	int xFirstLeftBottomWallShift = 4;
+	int yFirstLeftBottomWallShift = 365;
+	int xFirstLeftBottomWall = 4;
+	int yFirstLeftBottomWall = 845;
+
+
+	int nbLeftTopWall = 22;
+	int nbLeftTopWallShift = 2;
+	int nbLeftBottomWallShift = 9;
+
 	bool fluideSelect = false;
 	bool chargeSelect = false;
 	bool exitSelect = false;
