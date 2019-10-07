@@ -241,6 +241,15 @@ int simulate()
 								chargeSelect = false;
 								exitSelect = false;
 							}
+
+							if(isInRegion(event.button.x, event.button.y,
+														xChargeButton, xChargeButton + BUTTON_WIDTH,
+														yChargeButton, yChargeButton + BUTTON_HEIGHT))
+							{
+								fluideSelect = false;
+								chargeSelect = true;
+								exitSelect = false;
+							}
 						}
 					}
 					break;
