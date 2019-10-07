@@ -194,6 +194,18 @@ int simulate()
 	}
 	int xExitButton = 765, yExitButton = 760;
 
+	SDL_Texture * mapTexture = loadTexture("../Images/Photoshop/terrain.png", renderer);
+	if(!mapTexture)
+	{
+		SDL_DestroyTexture(exitButton);
+		SDL_DestroyTexture(chargeButton);
+		SDL_DestroyTexture(fluideButton);
+		SDL_DestroyTexture(textParkingSimulator);
+		SDL_DestroyTexture(background);
+		cleanUp(window, renderer);
+		return EXIT_FAILURE;
+	}
+
 	bool fluideSelect = false;
 	bool chargeSelect = false;
 	bool exitSelect = false;
@@ -220,6 +232,15 @@ int simulate()
 								chargeSelect = false;
 								exitSelect = true;
 							}
+
+							if(isInRegion(event.button.x, event.button.y,
+														xFluideButton, xFluideButton + BUTTON_WIDTH,
+														yFluideButton, yFluideButton + BUTTON_HEIGHT))
+							{
+								fluideSelect = true;
+								chargeSelect = false;
+								exitSelect = false;
+							}
 						}
 					}
 					break;
@@ -239,14 +260,19 @@ int simulate()
 
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
-		renderTexture(background, renderer, 0, 0, NULL);
 
 		if(!fluideSelect && !chargeSelect)
 		{
+			renderTexture(background, renderer, 0, 0, NULL);
 			renderTexture(textParkingSimulator, renderer, xTextParkingSimulator, yTextParkingSimulator, NULL);
 			renderTexture(fluideButton, renderer, xFluideButton, yFluideButton, NULL);
 			renderTexture(chargeButton, renderer, xChargeButton, yChargeButton, NULL);
 			renderTexture(exitButton, renderer, xExitButton, yExitButton, NULL);
+		}
+
+		else
+		{
+			renderTexture(mapTexture, renderer, 0, 0, NULL);
 		}
 
 		SDL_RenderPresent(renderer);
@@ -258,6 +284,7 @@ int simulate()
 
 
 	destroyer:
+	SDL_DestroyTexture(mapTexture);
 	SDL_DestroyTexture(exitButton);
 	SDL_DestroyTexture(chargeButton);
 	SDL_DestroyTexture(fluideButton);
