@@ -11,6 +11,8 @@
 #define SCREEN_HEIGHT 1080
 #define BUTTON_WIDTH 374
 #define BUTTON_HEIGHT 135
+#define BLOCK_WIDTH 64
+#define BLOCK_HEIGHT 64
 #define FPS 25
 #define DELAY_TIME 1000.0f/FPS
 
