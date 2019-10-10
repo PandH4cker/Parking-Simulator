@@ -18,6 +18,11 @@ typedef struct NodeVehicleElement
 	struct NodeVehicleElement * next;
 }NodeVehicleElement, * Vehicle;
 
-Vehicle addVehicle(char direction, int posx, int posy, 
+Vehicle newVehicle(char direction, int posx, int posy, 
 				   int vitesse, char alignement, char type, char etat);
+Vehicle addVehicle(Vehicle v, 
+				   char direction, int posx, int posy, 
+				   int vitesse, char alignement, char type, char etat);
+Vehicle pollFirstVehicle(Vehicle v, Vehicle * vPoll);
+bool isEmpty(Vehicle v);
 #endif
