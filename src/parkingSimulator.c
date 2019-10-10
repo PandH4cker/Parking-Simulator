@@ -31,9 +31,7 @@ int SDLnIMGnTTFInitialize()
 
 bool isInRegion(int x, int y, int xInf, int xSup, int yInf, int ySup)
 {
-	if((x >= xInf && x <= xSup) && (y >= yInf && y <= ySup))
-		return true;
-	return false;
+	return ((x >= xInf && x <= xSup) && (y >= yInf && y <= ySup));
 }
 
 void cleanUp(SDL_Window * window, SDL_Renderer * renderer)
