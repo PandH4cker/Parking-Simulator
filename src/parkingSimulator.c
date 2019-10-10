@@ -133,9 +133,61 @@ SDL_Renderer * createRenderer(SDL_Window * window, int index, Uint32 flags)
 	return renderer;
 }
 
+void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect)
+{
+	while(SDL_PollEvent(event))
+	{
+		switch(event->type)
+		{
+			case SDL_MOUSEBUTTONDOWN:
+				if(event->button.button == SDL_BUTTON_LEFT)
+				{
+					if(!*fluideSelect && !*chargeSelect && !*exitSelect)
+					{
+						if(isInRegion(event->button.x, event->button.y,
+							EXIT_BUTTON_X, EXIT_BUTTON_X + BUTTON_WIDTH,
+							EXIT_BUTTON_Y, EXIT_BUTTON_Y + BUTTON_HEIGHT))
+						{
+							*fluideSelect = false;
+							*chargeSelect = false;
+							*exitSelect = true;
+						}
+
+						if(isInRegion(event->button.x, event->button.y,
+							FLUIDE_BUTTON_X, FLUIDE_BUTTON_X + BUTTON_WIDTH,
+							FLUIDE_BUTTON_Y, FLUIDE_BUTTON_Y + BUTTON_HEIGHT))
+						{
+							*fluideSelect = true;
+							*chargeSelect = false;
+							*exitSelect = false;
+						}
+
+						if(isInRegion(event->button.x, event->button.y,
+							CHARGE_BUTTON_X, CHARGE_BUTTON_X + BUTTON_WIDTH,
+							CHARGE_BUTTON_Y, CHARGE_BUTTON_Y + BUTTON_HEIGHT))
+						{
+							*fluideSelect = false;
+							*chargeSelect = true;
+							*exitSelect = false;
+						}
+					}
+				}
+				break;
+
+				case SDL_MOUSEBUTTONUP:
+					break;
+
+				case SDL_MOUSEMOTION:
+					break;
+
+				case SDL_KEYDOWN:
+					break;
+		}
+	}	
+}
+
 int simulate()
 {
-	const char * fontPath = "../Fonts/colour_brush/colour.ttf";
 	if(SDLnIMGnTTFInitialize() == EXIT_FAILURE)
 		return EXIT_FAILURE;
 
@@ -152,14 +204,13 @@ int simulate()
 	}
 
 	SDL_Color white = WHITE;
-	SDL_Texture * textParkingSimulator = renderText("Parking Simulator", fontPath, white, 140, renderer);
+	SDL_Texture * textParkingSimulator = renderText("Parking Simulator", FONT_PATH, white, 140, renderer);
 	if(!textParkingSimulator)
 	{
 		SDL_DestroyTexture(background);
 		cleanUp(window, renderer);
 		return EXIT_FAILURE;
 	}
-	int xTextParkingSimulator = 450, yTextParkingSimulator = 270;
 
 	SDL_Texture * fluideButton = loadTexture("../Images/Backgrounds/FluideButton.png", renderer);
 	if(!fluideButton)
@@ -169,7 +220,6 @@ int simulate()
 		cleanUp(window, renderer);
 		return EXIT_FAILURE;
 	}
-	int xFluideButton = 765, yFluideButton = 550;
 
 	SDL_Texture * chargeButton = loadTexture("../Images/Backgrounds/ChargeButton.png", renderer);
 	if(!chargeButton)
@@ -180,7 +230,6 @@ int simulate()
 		cleanUp(window, renderer);
 		return EXIT_FAILURE;
 	}
-	int xChargeButton = 765, yChargeButton = 655;
 
 	SDL_Texture * exitButton = loadTexture("../Images/Backgrounds/exitButton.png", renderer);
 	if(!exitButton)
@@ -192,7 +241,6 @@ int simulate()
 		cleanUp(window, renderer);
 		return EXIT_FAILURE;
 	}
-	int xExitButton = 765, yExitButton = 760;
 
 	SDL_Texture * mapTexture = loadTexture("../Images/Photoshop/terrain.png", renderer);
 	if(!mapTexture)
@@ -206,18 +254,6 @@ int simulate()
 		return EXIT_FAILURE;
 	}
 
-	int xFirstLeftTopWall = 4;
-	int yFirstLeftTopWall = 100;
-	int xFirstLeftBottomWallShift = 4;
-	int yFirstLeftBottomWallShift = 365;
-	int xFirstLeftBottomWall = 4;
-	int yFirstLeftBottomWall = 845;
-
-
-	int nbLeftTopWall = 22;
-	int nbLeftTopWallShift = 2;
-	int nbLeftBottomWallShift = 9;
-
 	bool fluideSelect = false;
 	bool chargeSelect = false;
 	bool exitSelect = false;
@@ -227,55 +263,7 @@ int simulate()
 	{
 		frameStart = SDL_GetTicks();
 		SDL_Event event;
-		while(SDL_PollEvent(&event))
-		{
-			switch(event.type)
-			{
-				case SDL_MOUSEBUTTONDOWN:
-					if(event.button.button == SDL_BUTTON_LEFT)
-					{
-						if(!fluideSelect && !chargeSelect && !exitSelect)
-						{
-							if(isInRegion(event.button.x, event.button.y,
-														xExitButton, xExitButton + BUTTON_WIDTH,
-														yExitButton, yExitButton + BUTTON_HEIGHT))
-							{
-								fluideSelect = false;
-								chargeSelect = false;
-								exitSelect = true;
-							}
-
-							if(isInRegion(event.button.x, event.button.y,
-														xFluideButton, xFluideButton + BUTTON_WIDTH,
-														yFluideButton, yFluideButton + BUTTON_HEIGHT))
-							{
-								fluideSelect = true;
-								chargeSelect = false;
-								exitSelect = false;
-							}
-
-							if(isInRegion(event.button.x, event.button.y,
-														xChargeButton, xChargeButton + BUTTON_WIDTH,
-														yChargeButton, yChargeButton + BUTTON_HEIGHT))
-							{
-								fluideSelect = false;
-								chargeSelect = true;
-								exitSelect = false;
-							}
-						}
-					}
-					break;
-
-				case SDL_MOUSEBUTTONUP:
-					break;
-
-				case SDL_MOUSEMOTION:
-					break;
-
-				case SDL_KEYDOWN:
-					break;
-			}
-		}
+		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect);
 
 		if(exitSelect) goto destroyer;
 
@@ -285,10 +273,10 @@ int simulate()
 		if(!fluideSelect && !chargeSelect)
 		{
 			renderTexture(background, renderer, 0, 0, NULL);
-			renderTexture(textParkingSimulator, renderer, xTextParkingSimulator, yTextParkingSimulator, NULL);
-			renderTexture(fluideButton, renderer, xFluideButton, yFluideButton, NULL);
-			renderTexture(chargeButton, renderer, xChargeButton, yChargeButton, NULL);
-			renderTexture(exitButton, renderer, xExitButton, yExitButton, NULL);
+			renderTexture(textParkingSimulator, renderer, TEXT_PARKING_SIMULATOR_X, TEXT_PARKING_SIMULATOR_Y, NULL);
+			renderTexture(fluideButton, renderer, FLUIDE_BUTTON_X, FLUIDE_BUTTON_Y, NULL);
+			renderTexture(chargeButton, renderer, CHARGE_BUTTON_X, CHARGE_BUTTON_Y, NULL);
+			renderTexture(exitButton, renderer, EXIT_BUTTON_X, EXIT_BUTTON_Y, NULL);
 		}
 
 		else
@@ -305,12 +293,12 @@ int simulate()
 
 
 	destroyer:
-	SDL_DestroyTexture(mapTexture);
-	SDL_DestroyTexture(exitButton);
-	SDL_DestroyTexture(chargeButton);
-	SDL_DestroyTexture(fluideButton);
-	SDL_DestroyTexture(textParkingSimulator);
-	SDL_DestroyTexture(background);
-	cleanUp(window, renderer);
-	return EXIT_SUCCESS;
+		SDL_DestroyTexture(mapTexture);
+		SDL_DestroyTexture(exitButton);
+		SDL_DestroyTexture(chargeButton);
+		SDL_DestroyTexture(fluideButton);
+		SDL_DestroyTexture(textParkingSimulator);
+		SDL_DestroyTexture(background);
+		cleanUp(window, renderer);
+		return EXIT_SUCCESS;
 }
