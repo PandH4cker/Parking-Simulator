@@ -194,6 +194,7 @@ int simulate()
 										SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	SDL_Renderer * renderer = createRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_Texture * background = loadTexture("../Images/Backgrounds/MainMenu.png", renderer);
 	if(!background)
 	{
