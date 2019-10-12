@@ -294,7 +294,7 @@ int simulate()
 		return EXIT_FAILURE;
 	}
 
-	SDL_Texture * carAllTexture = loadTexture("../Images/Cars/carAll.png", renderer);
+	SDL_Texture * carAllTexture = loadTexture("../Images/Cars/carAll_red.png", renderer);
 	if(!carAllTexture)
 	{
 		SDL_DestroyTexture(mapTexture);
@@ -403,6 +403,26 @@ int simulate()
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
 						}
 						break;
+				}
+			}
+
+			else
+			{
+				switch(v->currentDirection)
+				{
+					case NORTH:
+						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
+						break;
+					case SOUTH:
+						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
+						break;
+					case EAST:
+						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
+						break;
+					case WEST:
+						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
+						break;
+
 				}
 			}
 		}
