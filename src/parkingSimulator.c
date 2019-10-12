@@ -352,55 +352,56 @@ int simulate()
 						if(v->currentDirection == EAST)
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
 						}
 						else
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
 						}
 						break;
 					case SOUTH:
 						if(v->currentDirection == EAST)
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
 						}
 						else
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
 						}
 						break;
 					case EAST:
 						if(v->currentDirection == NORTH)
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
 						}
 						else
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
 						}
 						break;
 					case WEST:
 						if(v->currentDirection == NORTH)
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
-							SDL_Delay(25);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
 						}
 						else
 						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
+							//SDL_Delay(25);
+							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
 						}
 						break;
 				}

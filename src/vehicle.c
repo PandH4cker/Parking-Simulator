@@ -84,12 +84,16 @@ void changeVehicleDirection(Vehicle * v, SDL_Keycode key)
 	{
 		case SDLK_UP:
 			(*v)->currentDirection = NORTH;
+			break;
 		case SDLK_DOWN:
 			(*v)->currentDirection = SOUTH;
+			break;
 		case SDLK_LEFT:
 			(*v)->currentDirection = WEST;
+			break;
 		case SDLK_RIGHT:
 			(*v)->currentDirection = EAST;
+			break;
 	}
 }
 
@@ -99,12 +103,16 @@ void changeVehiclePosition(Vehicle * v, SDL_Keycode key)
 	{
 		case SDLK_UP:
 			(*v)->posy -= (*v)->vitesse;
+			break;
 		case SDLK_DOWN:
 			(*v)->posy += (*v)->vitesse;
+			break;
 		case SDLK_LEFT:
 			(*v)->posx -= (*v)->vitesse;
+			break;
 		case SDLK_RIGHT:
 			(*v)->posx += (*v)->vitesse;
+			break;
 	}
 }
 
