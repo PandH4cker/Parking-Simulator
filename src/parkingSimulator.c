@@ -131,7 +131,7 @@ SDL_Renderer * createRenderer(SDL_Window * window, int index, Uint32 flags)
 	return renderer;
 }
 
-void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect)
+void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v)
 {
 	while(SDL_PollEvent(event))
 	{
@@ -172,14 +172,35 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 				}
 				break;
 
-				case SDL_MOUSEBUTTONUP:
-					break;
+			case SDL_MOUSEBUTTONUP:
+				break;
 
-				case SDL_MOUSEMOTION:
-					break;
+			case SDL_MOUSEMOTION:
+				break;
 
-				case SDL_KEYDOWN:
-					break;
+			case SDL_KEYDOWN:
+				if(*fluideSelect)
+					switch(event->key.keysym.sym)
+					{
+						case SDLK_UP:
+							switch((*v)->direction)
+							{
+								case NORTH:
+									(*v)->posy -= (*v)->vitesse;
+									break;
+								case SOUTH:
+									(*v)->posy += (*v)->vitesse;
+									break;
+								case EAST:
+									(*v)->posx -= (*v)->vitesse;
+									break;
+								case WEST:
+									(*v)->posx += (*v)->vitesse;
+									break;
+							}
+							break;
+					}
+				break;
 		}
 	}	
 }
@@ -253,16 +274,30 @@ int simulate()
 		return EXIT_FAILURE;
 	}
 
+	SDL_Texture * carTopTexture = loadTexture("../Images/Sprites/Parking pack/PNG/Cars/car1_red.png", renderer);
+	if(!carTopTexture)
+	{
+		SDL_DestroyTexture(mapTexture);
+		SDL_DestroyTexture(chargeButton);
+		SDL_DestroyTexture(fluideButton);
+		SDL_DestroyTexture(textParkingSimulator);
+		SDL_DestroyTexture(background);
+		cleanUp(window, renderer);
+		return EXIT_FAILURE;
+	}
+
 	bool fluideSelect = false;
 	bool chargeSelect = false;
 	bool exitSelect = false;
+
+	Vehicle v = newVehicle(NORTH, ENTER_POINT_X, ENTER_POINT_Y, 10, LEFT, CAR, ACTIVE);
 
 	Uint32 frameStart, frameTime;
 	while(!SDL_QuitRequested())
 	{
 		frameStart = SDL_GetTicks();
 		SDL_Event event;
-		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect);
+		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect, &v);
 
 		if(exitSelect) goto destroyer;
 
@@ -281,6 +316,7 @@ int simulate()
 		else
 		{
 			renderTexture(mapTexture, renderer, 0, 0, NULL);
+			renderTexture(carTopTexture, renderer, v->posx, v->posy, NULL);
 		}
 
 		SDL_RenderPresent(renderer);
@@ -292,6 +328,7 @@ int simulate()
 
 
 	destroyer:
+		SDL_DestroyTexture(carTopTexture);
 		SDL_DestroyTexture(mapTexture);
 		SDL_DestroyTexture(exitButton);
 		SDL_DestroyTexture(chargeButton);
@@ -299,5 +336,6 @@ int simulate()
 		SDL_DestroyTexture(textParkingSimulator);
 		SDL_DestroyTexture(background);
 		cleanUp(window, renderer);
+		free(v);
 		return EXIT_SUCCESS;
 }

@@ -28,7 +28,7 @@ SDL_Texture * renderText(const char * text, const char * fontName, SDL_Color col
 void renderTextureClip(SDL_Texture * texture, SDL_Renderer * renderer, SDL_Rect dest, SDL_Rect * clip);
 void renderTexture(SDL_Texture * texture, SDL_Renderer * renderer, int x, int y, SDL_Rect * clip);
 void cleanUp(SDL_Window * window, SDL_Renderer * renderer);
-void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect);
+void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v);
 int simulate();
 
 #endif
