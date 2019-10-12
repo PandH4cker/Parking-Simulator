@@ -274,7 +274,7 @@ int simulate()
 		return EXIT_FAILURE;
 	}
 
-	SDL_Texture * carTopTexture = loadTexture("../Images/Sprites/Parking pack/PNG/Cars/car1_red.png", renderer);
+	SDL_Texture * carAllTexture = loadTexture("../Images/Cars/carAll.png", renderer);
 	if(!carTopTexture)
 	{
 		SDL_DestroyTexture(mapTexture);
