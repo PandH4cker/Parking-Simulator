@@ -131,6 +131,37 @@ SDL_Renderer * createRenderer(SDL_Window * window, int index, Uint32 flags)
 	return renderer;
 }
 
+void handleMenuButtonsEvent(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect)
+{
+	if(!*fluideSelect && !*chargeSelect && !*exitSelect)
+	{
+		if(isInRegion(event->button.x, event->button.y,
+					  EXIT_BUTTON_X, EXIT_BUTTON_X + BUTTON_WIDTH,
+					  EXIT_BUTTON_Y, EXIT_BUTTON_Y + BUTTON_HEIGHT))
+		{
+			*fluideSelect = false;
+			*chargeSelect = false;
+			*exitSelect = true;
+		}
+		if(isInRegion(event->button.x, event->button.y,
+					  FLUIDE_BUTTON_X, FLUIDE_BUTTON_X + BUTTON_WIDTH,
+					  FLUIDE_BUTTON_Y, FLUIDE_BUTTON_Y + BUTTON_HEIGHT))
+		{
+			*fluideSelect = true;
+			*chargeSelect = false;
+			*exitSelect = false;
+		}
+		if(isInRegion(event->button.x, event->button.y,
+					  CHARGE_BUTTON_X, CHARGE_BUTTON_X + BUTTON_WIDTH,
+					  CHARGE_BUTTON_Y, CHARGE_BUTTON_Y + BUTTON_HEIGHT))
+		{
+			*fluideSelect = false;
+			*chargeSelect = true;
+			*exitSelect = false;
+		}
+	}	
+}
+
 void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v)
 {
 	while(SDL_PollEvent(event))
@@ -140,35 +171,7 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 			case SDL_MOUSEBUTTONDOWN:
 				if(event->button.button == SDL_BUTTON_LEFT)
 				{
-					if(!*fluideSelect && !*chargeSelect && !*exitSelect)
-					{
-						if(isInRegion(event->button.x, event->button.y,
-							EXIT_BUTTON_X, EXIT_BUTTON_X + BUTTON_WIDTH,
-							EXIT_BUTTON_Y, EXIT_BUTTON_Y + BUTTON_HEIGHT))
-						{
-							*fluideSelect = false;
-							*chargeSelect = false;
-							*exitSelect = true;
-						}
-
-						if(isInRegion(event->button.x, event->button.y,
-							FLUIDE_BUTTON_X, FLUIDE_BUTTON_X + BUTTON_WIDTH,
-							FLUIDE_BUTTON_Y, FLUIDE_BUTTON_Y + BUTTON_HEIGHT))
-						{
-							*fluideSelect = true;
-							*chargeSelect = false;
-							*exitSelect = false;
-						}
-
-						if(isInRegion(event->button.x, event->button.y,
-							CHARGE_BUTTON_X, CHARGE_BUTTON_X + BUTTON_WIDTH,
-							CHARGE_BUTTON_Y, CHARGE_BUTTON_Y + BUTTON_HEIGHT))
-						{
-							*fluideSelect = false;
-							*chargeSelect = true;
-							*exitSelect = false;
-						}
-					}
+					handleMenuButtonsEvent(event, fluideSelect, chargeSelect, exitSelect);
 				}
 				break;
 
@@ -181,45 +184,6 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 			case SDL_KEYDOWN:
 				if(*fluideSelect)
 					moveVehicle(v, event->key.keysym.sym);
-					/*switch(event->key.keysym.sym)
-					{
-						case SDLK_UP:
-							switch((*v)->currentDirection)
-							{
-								case NORTH:
-									(*v)->previousDirection = (*v)->currentDirection;
-									(*v)->currentDirection = NORTH;
-									(*v)->posy -= (*v)->vitesse;
-									break;
-								case SOUTH:
-									(*v)->previousDirection = (*v)->currentDirection;
-									(*v)->currentDirection = NORTH;
-									(*v)->posy += (*v)->vitesse;
-									break;
-								case EAST:
-									(*v)->previousDirection = (*v)->currentDirection;
-									(*v)->currentDirection = NORTH;
-									(*v)->posx -= (*v)->vitesse;
-									break;
-								case WEST:
-									(*v)->previousDirection = (*v)->currentDirection;
-									(*v)->currentDirection = NORTH;
-									(*v)->posx += (*v)->vitesse;
-									break;
-							}
-							break;
-
-						case SDLK_DOWN:
-							break;
-
-						case SDLK_LEFT:
-							break;
-
-						case SDLK_RIGHT:
-							break;
-
-					}*/
-
 				break;
 		}
 	}	
@@ -345,70 +309,34 @@ int simulate()
 		{
 			renderTexture(mapTexture, renderer, 0, 0, NULL);
 			if(v->currentDirection != v->previousDirection)
-			{
 				switch(v->previousDirection)
 				{
 					case NORTH:
 						if(v->currentDirection == EAST)
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
-						}
 						else
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
-						}
 						break;
 					case SOUTH:
 						if(v->currentDirection == EAST)
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
-						}
 						else
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
-						}
 						break;
 					case EAST:
 						if(v->currentDirection == NORTH)
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
-						}
 						else
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
-						}
 						break;
 					case WEST:
 						if(v->currentDirection == NORTH)
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
-						}
 						else
-						{
 							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
-							//SDL_Delay(25);
-							//renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
-						}
 						break;
 				}
-			}
-
 			else
-			{
 				switch(v->currentDirection)
 				{
 					case NORTH:
@@ -425,7 +353,6 @@ int simulate()
 						break;
 
 				}
-			}
 		}
 
 		SDL_RenderPresent(renderer);
