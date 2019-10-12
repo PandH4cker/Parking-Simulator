@@ -10,7 +10,8 @@ Vehicle newVehicle(char direction, int posx, int posy,
 		exit(EXIT_FAILURE);
 	}
 
-	v->direction = direction;
+	v->currentDirection = direction;
+	v->previousDirection = direction;
 	v->posx = posx;
 	v->posy = posy;
 	v->vitesse = vitesse;
@@ -55,7 +56,8 @@ Vehicle pollFirstVehicle(Vehicle v, Vehicle * vPoll)
 	vElement = v->next;
 
 	(*vPoll)->next = NULL;
-	(*vPoll)->direction = v->direction;
+	(*vPoll)->currentDirection = v->currentDirection;
+	(*vPoll)->previousDirection = v->previousDirection;
 	(*vPoll)->posx = v->posx;
 	(*vPoll)->posy = v->posy;
 	(*vPoll)->vitesse = v->vitesse;
@@ -73,4 +75,41 @@ Vehicle pollFirstVehicle(Vehicle v, Vehicle * vPoll)
 bool isEmpty(Vehicle v)
 {
 	return v == NULL ? true : false;
+}
+
+void changeVehicleDirection(Vehicle * v, SDL_Keycode key)
+{
+	(*v)->previousDirection = (*v)->currentDirection;
+	switch(key)
+	{
+		case SDLK_UP:
+			(*v)->currentDirection = NORTH;
+		case SDLK_DOWN:
+			(*v)->currentDirection = SOUTH;
+		case SDLK_LEFT:
+			(*v)->currentDirection = WEST;
+		case SDLK_RIGHT:
+			(*v)->currentDirection = EAST;
+	}
+}
+
+void changeVehiclePosition(Vehicle * v, SDL_Keycode key)
+{
+	switch(key)
+	{
+		case SDLK_UP:
+			(*v)->posy -= (*v)->vitesse;
+		case SDLK_DOWN:
+			(*v)->posy += (*v)->vitesse;
+		case SDLK_LEFT:
+			(*v)->posx -= (*v)->vitesse;
+		case SDLK_RIGHT:
+			(*v)->posx += (*v)->vitesse;
+	}
+}
+
+void moveVehicle(Vehicle * v, SDL_Keycode key)
+{
+	changeVehicleDirection(v, key);
+	changeVehiclePosition(v, key);
 }

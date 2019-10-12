@@ -180,26 +180,46 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 
 			case SDL_KEYDOWN:
 				if(*fluideSelect)
-					switch(event->key.keysym.sym)
+					moveVehicle(v, event->key.keysym.sym);
+					/*switch(event->key.keysym.sym)
 					{
 						case SDLK_UP:
-							switch((*v)->direction)
+							switch((*v)->currentDirection)
 							{
 								case NORTH:
+									(*v)->previousDirection = (*v)->currentDirection;
+									(*v)->currentDirection = NORTH;
 									(*v)->posy -= (*v)->vitesse;
 									break;
 								case SOUTH:
+									(*v)->previousDirection = (*v)->currentDirection;
+									(*v)->currentDirection = NORTH;
 									(*v)->posy += (*v)->vitesse;
 									break;
 								case EAST:
+									(*v)->previousDirection = (*v)->currentDirection;
+									(*v)->currentDirection = NORTH;
 									(*v)->posx -= (*v)->vitesse;
 									break;
 								case WEST:
+									(*v)->previousDirection = (*v)->currentDirection;
+									(*v)->currentDirection = NORTH;
 									(*v)->posx += (*v)->vitesse;
 									break;
 							}
 							break;
-					}
+
+						case SDLK_DOWN:
+							break;
+
+						case SDLK_LEFT:
+							break;
+
+						case SDLK_RIGHT:
+							break;
+
+					}*/
+
 				break;
 		}
 	}	
@@ -275,7 +295,7 @@ int simulate()
 	}
 
 	SDL_Texture * carAllTexture = loadTexture("../Images/Cars/carAll.png", renderer);
-	if(!carTopTexture)
+	if(!carAllTexture)
 	{
 		SDL_DestroyTexture(mapTexture);
 		SDL_DestroyTexture(chargeButton);
@@ -284,6 +304,14 @@ int simulate()
 		SDL_DestroyTexture(background);
 		cleanUp(window, renderer);
 		return EXIT_FAILURE;
+	}
+	SDL_Rect carClips[CAR_CLIPS];
+	for(int i = 0; i < CAR_CLIPS; ++i)
+	{
+		carClips[i].x = i * CAR_WIDTH;
+		carClips[i].y = 0;
+		carClips[i].w = CAR_WIDTH;
+		carClips[i].h = CAR_HEIGHT;
 	}
 
 	bool fluideSelect = false;
@@ -316,7 +344,67 @@ int simulate()
 		else
 		{
 			renderTexture(mapTexture, renderer, 0, 0, NULL);
-			renderTexture(carTopTexture, renderer, v->posx, v->posy, NULL);
+			if(v->currentDirection != v->previousDirection)
+			{
+				switch(v->previousDirection)
+				{
+					case NORTH:
+						if(v->currentDirection == EAST)
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
+						}
+						else
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
+						}
+						break;
+					case SOUTH:
+						if(v->currentDirection == EAST)
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
+						}
+						else
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
+						}
+						break;
+					case EAST:
+						if(v->currentDirection == NORTH)
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
+						}
+						else
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
+						}
+						break;
+					case WEST:
+						if(v->currentDirection == NORTH)
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
+							SDL_Delay(25);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
+						}
+						else
+						{
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
+							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
+						}
+						break;
+				}
+			}
 		}
 
 		SDL_RenderPresent(renderer);
@@ -328,7 +416,7 @@ int simulate()
 
 
 	destroyer:
-		SDL_DestroyTexture(carTopTexture);
+		SDL_DestroyTexture(carAllTexture);
 		SDL_DestroyTexture(mapTexture);
 		SDL_DestroyTexture(exitButton);
 		SDL_DestroyTexture(chargeButton);
