@@ -83,16 +83,20 @@ void changeVehicleDirection(Vehicle * v, SDL_Keycode key)
 	switch(key)
 	{
 		case SDLK_UP:
-			(*v)->currentDirection = NORTH;
+			if((*v)->previousDirection != SOUTH)
+				(*v)->currentDirection = NORTH;
 			break;
 		case SDLK_DOWN:
-			(*v)->currentDirection = SOUTH;
+			if((*v)->previousDirection != NORTH)
+				(*v)->currentDirection = SOUTH;
 			break;
 		case SDLK_LEFT:
-			(*v)->currentDirection = WEST;
+			if((*v)->previousDirection != EAST)
+				(*v)->currentDirection = WEST;
 			break;
 		case SDLK_RIGHT:
-			(*v)->currentDirection = EAST;
+			if((*v)->previousDirection != WEST)
+				(*v)->currentDirection = EAST;
 			break;
 	}
 }
