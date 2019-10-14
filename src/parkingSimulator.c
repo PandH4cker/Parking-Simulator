@@ -29,11 +29,6 @@ int SDLnIMGnTTFInitialize()
 	return EXIT_SUCCESS;
 }
 
-bool isInRegion(int x, int y, int xInf, int xSup, int yInf, int ySup)
-{
-	return ((x >= xInf && x <= xSup) && (y >= yInf && y <= ySup));
-}
-
 void cleanUp(SDL_Window * window, SDL_Renderer * renderer)
 {
 	SDL_DestroyWindow(window);
@@ -162,7 +157,7 @@ void handleMenuButtonsEvent(SDL_Event * event, bool * fluideSelect, bool * charg
 	}	
 }
 
-void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v)
+void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v, SDL_Rect * r, int size)
 {
 	while(SDL_PollEvent(event))
 	{
@@ -183,7 +178,7 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 
 			case SDL_KEYDOWN:
 				if(*fluideSelect)
-					moveVehicle(v, event->key.keysym.sym);
+					moveVehicle(v, event->key.keysym.sym, r, size);
 				break;
 		}
 	}	
@@ -198,10 +193,6 @@ void displayMenu(SDL_Renderer * renderer, SDL_Texture * background, SDL_Texture 
 	renderTexture(exitButton, renderer, EXIT_BUTTON_X, EXIT_BUTTON_Y, NULL);
 }
 
-/*bool isAnObstacles(SDL_Rect * obstacles, Vehicle v)
-{
-
-}*/
 
 int simulate()
 {
@@ -292,6 +283,60 @@ int simulate()
 		carClips[i].h = CAR_HEIGHT;
 	}
 
+	SDL_Rect leftTopWallArea[NUMB_LEFT_TOP_WALL];
+	for(int i = 1; i <= NUMB_LEFT_TOP_WALL; ++i)
+	{
+		leftTopWallArea[i - 1].x = i * FIRST_LEFT_TOP_WALL_X + (i - 1) * BLOCK_WIDTH;
+		leftTopWallArea[i - 1].y = FIRST_LEFT_TOP_WALL_Y;
+		leftTopWallArea[i - 1].w = BLOCK_WIDTH;
+		leftTopWallArea[i - 1].h = BLOCK_HEIGHT;
+	}
+
+	SDL_Rect leftTopWallShiftArea[NUMB_LEFT_TOP_WALL_SHIFT];
+	for(int i = 1; i <= NUMB_LEFT_TOP_WALL_SHIFT; ++i)
+	{
+		leftTopWallShiftArea[i - 1].x = FIRST_LEFT_TOP_WALL_X;
+		leftTopWallShiftArea[i - 1].y = i * FIRST_LEFT_TOP_WALL_Y + (i - 1) * BLOCK_HEIGHT;
+		leftTopWallShiftArea[i - 1].w = BLOCK_WIDTH;
+		leftTopWallShiftArea[i - 1].h = BLOCK_HEIGHT;
+	}
+
+	SDL_Rect leftBottomWallShiftArea[NUMB_LEFT_BOTTOM_WALL_SHIFT];
+	for(int i = 1; i <= NUMB_LEFT_BOTTOM_WALL_SHIFT; ++i)
+	{
+		leftBottomWallShiftArea[i - 1].x = FIRST_LEFT_BOTTOM_WALL_SHIFT_X;
+		leftBottomWallShiftArea[i - 1].y = i * FIRST_LEFT_BOTTOM_WALL_SHIFT_Y + (i - 1) * BLOCK_HEIGHT;
+		leftBottomWallShiftArea[i - 1].w = BLOCK_WIDTH;
+		leftBottomWallShiftArea[i - 1].h = BLOCK_HEIGHT;
+	}
+
+	SDL_Rect leftBottomWallArea[NUMB_LEFT_BOTTOM_WALL];
+	for(int i = 1; i <= NUMB_LEFT_BOTTOM_WALL; ++i)
+	{
+		leftBottomWallArea[i - 1].x = i * FIRST_LEFT_BOTTOM_WALL_X + (i - 1) * BLOCK_WIDTH;
+		leftBottomWallArea[i - 1].y = FIRST_LEFT_BOTTOM_WALL_Y;
+		leftBottomWallArea[i - 1].w = BLOCK_WIDTH;
+		leftBottomWallArea[i - 1].h = BLOCK_HEIGHT;
+	}
+
+	SDL_Rect rightTopWallShiftArea[NUMB_RIGHT_TOP_WALL_SHIFT];
+	for(int i = 1; i <= NUMB_RIGHT_TOP_WALL_SHIFT; ++i)
+	{
+		rightTopWallShiftArea[i - 1].x = FIRST_RIGHT_TOP_WALL_X;
+		rightTopWallShiftArea[i - 1].y = i * FIRST_RIGHT_TOP_WALL_Y + (i - 1) * BLOCK_HEIGHT;
+		rightTopWallShiftArea[i - 1].w = BLOCK_WIDTH;
+		rightTopWallShiftArea[i - 1].h = BLOCK_HEIGHT;
+	}
+
+	SDL_Rect rightBottomWallShiftArea[NUMB_RIGHT_BOTTOM_WALL_SHIFT];
+	for(int i = 1; i <= NUMB_RIGHT_BOTTOM_WALL_SHIFT; ++i)
+	{
+		rightBottomWallShiftArea[i - 1].x = FIRST_RIGHT_BOTTOM_WALL_X;
+		rightBottomWallShiftArea[i - 1].y = i * FIRST_RIGHT_BOTTOM_WALL_Y + (i - 1) * BLOCK_HEIGHT;
+		rightBottomWallShiftArea[i - 1].w = BLOCK_WIDTH;
+		rightBottomWallShiftArea[i - 1].h = BLOCK_HEIGHT;
+	}
+
 	bool fluideSelect = false;
 	bool chargeSelect = false;
 	bool exitSelect = false;
@@ -303,8 +348,7 @@ int simulate()
 	{
 		frameStart = SDL_GetTicks();
 		SDL_Event event;
-		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect, &v);
-
+		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect, &v, leftTopWallArea, NUMB_LEFT_TOP_WALL);
 		if(exitSelect) goto destroyer;
 
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);

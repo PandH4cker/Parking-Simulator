@@ -101,27 +101,42 @@ void changeVehicleDirection(Vehicle * v, SDL_Keycode key)
 	}
 }
 
-void changeVehiclePosition(Vehicle * v, SDL_Keycode key)
+void changeVehiclePosition(Vehicle * v, SDL_Keycode key, SDL_Rect * r, int size)
 {
 	switch(key)
 	{
 		case SDLK_UP:
-			(*v)->posy -= (*v)->vitesse;
+			if(!isAnObstacles(r, size, (*v)->posx, (*v)->posy - (*v)->vitesse))
+				(*v)->posy -= (*v)->vitesse;
 			break;
 		case SDLK_DOWN:
-			(*v)->posy += (*v)->vitesse;
+			if(!isAnObstacles(r, size, (*v)->posx, (*v)->posy + (*v)->vitesse))
+				(*v)->posy += (*v)->vitesse;
 			break;
 		case SDLK_LEFT:
-			(*v)->posx -= (*v)->vitesse;
+			if(!isAnObstacles(r, size, (*v)->posx - (*v)->vitesse, (*v)->posy))
+				(*v)->posx -= (*v)->vitesse;
 			break;
 		case SDLK_RIGHT:
-			(*v)->posx += (*v)->vitesse;
+			if(!isAnObstacles(r, size, (*v)->posx + (*v)->vitesse, (*v)->posy))
+				(*v)->posx += (*v)->vitesse;
 			break;
 	}
 }
 
-void moveVehicle(Vehicle * v, SDL_Keycode key)
+void moveVehicle(Vehicle * v, SDL_Keycode key, SDL_Rect * r, int size)
 {
 	changeVehicleDirection(v, key);
-	changeVehiclePosition(v, key);
+	changeVehiclePosition(v, key, r, size);
+}
+
+bool isAnObstacles(SDL_Rect * obstacles, int size, int x, int y)
+{
+	return isInRegion(x, y, obstacles[0].x, obstacles[size - 1].x + obstacles[size - 1].w, 
+							obstacles[0].y, obstacles[size - 1].y + obstacles[size - 1].h);
+}
+
+bool isInRegion(int x, int y, int xInf, int xSup, int yInf, int ySup)
+{
+	return ((x >= xInf && x <= xSup) && (y >= yInf && y <= ySup));
 }

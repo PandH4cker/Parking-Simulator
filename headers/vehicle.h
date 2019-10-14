@@ -48,7 +48,9 @@ Vehicle addVehicle(Vehicle v,
 				   int vitesse, char alignement, char type, char etat);
 Vehicle pollFirstVehicle(Vehicle v, Vehicle * vPoll);
 void changeVehicleDirection(Vehicle * v, SDL_Keycode key);
-void changeVehiclePosition(Vehicle * v, SDL_Keycode key);
-void moveVehicle(Vehicle * v, SDL_Keycode key);
+void changeVehiclePosition(Vehicle * v, SDL_Keycode key, SDL_Rect * r, int size);
+void moveVehicle(Vehicle * v, SDL_Keycode key, SDL_Rect * r, int size);
 bool isEmpty(Vehicle v);
+bool isAnObstacles(SDL_Rect * obstacles, int size, int x, int y);
+bool isInRegion(int x, int y, int xInf, int xSup, int yInf, int ySup);
 #endif
