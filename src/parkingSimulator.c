@@ -189,6 +189,20 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 	}	
 }
 
+void displayMenu(SDL_Renderer * renderer, SDL_Texture * background, SDL_Texture * textParkingSimulator, SDL_Texture * fluideButton, SDL_Texture * chargeButton, SDL_Texture * exitButton)
+{
+	renderTexture(background, renderer, 0, 0, NULL);
+	renderTexture(textParkingSimulator, renderer, TEXT_PARKING_SIMULATOR_X, TEXT_PARKING_SIMULATOR_Y, NULL);
+	renderTexture(fluideButton, renderer, FLUIDE_BUTTON_X, FLUIDE_BUTTON_Y, NULL);
+	renderTexture(chargeButton, renderer, CHARGE_BUTTON_X, CHARGE_BUTTON_Y, NULL);
+	renderTexture(exitButton, renderer, EXIT_BUTTON_X, EXIT_BUTTON_Y, NULL);
+}
+
+/*bool isAnObstacles(SDL_Rect * obstacles, Vehicle v)
+{
+
+}*/
+
 int simulate()
 {
 	if(SDLnIMGnTTFInitialize() == EXIT_FAILURE)
@@ -297,13 +311,7 @@ int simulate()
 		SDL_RenderClear(renderer);
 
 		if(!fluideSelect && !chargeSelect)
-		{
-			renderTexture(background, renderer, 0, 0, NULL);
-			renderTexture(textParkingSimulator, renderer, TEXT_PARKING_SIMULATOR_X, TEXT_PARKING_SIMULATOR_Y, NULL);
-			renderTexture(fluideButton, renderer, FLUIDE_BUTTON_X, FLUIDE_BUTTON_Y, NULL);
-			renderTexture(chargeButton, renderer, CHARGE_BUTTON_X, CHARGE_BUTTON_Y, NULL);
-			renderTexture(exitButton, renderer, EXIT_BUTTON_X, EXIT_BUTTON_Y, NULL);
-		}
+			displayMenu(renderer, background, textParkingSimulator, fluideButton, chargeButton, exitButton);
 
 		else
 		{

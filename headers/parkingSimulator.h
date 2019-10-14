@@ -29,6 +29,9 @@ void renderTextureClip(SDL_Texture * texture, SDL_Renderer * renderer, SDL_Rect 
 void renderTexture(SDL_Texture * texture, SDL_Renderer * renderer, int x, int y, SDL_Rect * clip);
 void cleanUp(SDL_Window * window, SDL_Renderer * renderer);
 void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v);
+void handleMenuButtonsEvent(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect);
+void displayMenu(SDL_Renderer * renderer, SDL_Texture * background, SDL_Texture * textParkingSimulator, SDL_Texture * fluideButton, SDL_Texture * chargeButton, SDL_Texture * exitButton);
+bool isAnObstacles(SDL_Rect * obstacles, Vehicle v);
 int simulate();
 
 #endif
