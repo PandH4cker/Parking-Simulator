@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <time.h>
 #include "vehicle.h"
 #include "const.h"
 
@@ -36,7 +37,7 @@ SDL_Texture * renderText(const char * text, const char * fontName, SDL_Color col
 void renderTextureClip(SDL_Texture * texture, SDL_Renderer * renderer, SDL_Rect dest, SDL_Rect * clip);
 void renderTexture(SDL_Texture * texture, SDL_Renderer * renderer, int x, int y, SDL_Rect * clip);
 void cleanUp(SDL_Window * window, SDL_Renderer * renderer);
-void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v, SDL_Rect * r, int size);
+void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect);
 void handleMenuButtonsEvent(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect);
 void displayMenu(SDL_Renderer * renderer, SDL_Texture * background, SDL_Texture * textParkingSimulator, SDL_Texture * fluideButton, SDL_Texture * chargeButton, SDL_Texture * exitButton);
 int simulate();

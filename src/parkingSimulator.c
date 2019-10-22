@@ -2,7 +2,8 @@
 
 int SDLnIMGnTTFInitialize()
 {
-	int flags = IMG_INIT_PNG;
+	srand(time(NULL));
+	int flags = IMG_INIT_PNG | IMG_INIT_JPG;
 	int initted = IMG_Init(flags);
 
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0)
@@ -31,8 +32,8 @@ int SDLnIMGnTTFInitialize()
 
 void cleanUp(SDL_Window * window, SDL_Renderer * renderer)
 {
-	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
@@ -157,7 +158,7 @@ void handleMenuButtonsEvent(SDL_Event * event, bool * fluideSelect, bool * charg
 	}	
 }
 
-void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect, Vehicle * v, SDL_Rect * r, int size)
+void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect)
 {
 	while(SDL_PollEvent(event))
 	{
@@ -165,9 +166,7 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 		{
 			case SDL_MOUSEBUTTONDOWN:
 				if(event->button.button == SDL_BUTTON_LEFT)
-				{
 					handleMenuButtonsEvent(event, fluideSelect, chargeSelect, exitSelect);
-				}
 				break;
 
 			case SDL_MOUSEBUTTONUP:
@@ -177,8 +176,8 @@ void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, b
 				break;
 
 			case SDL_KEYDOWN:
-				if(*fluideSelect)
-					moveVehicle(v, event->key.keysym.sym, r, size);
+				/*if(*fluideSelect)
+					moveVehicle(v, event->key.keysym.sym, r, size);*/
 				break;
 		}
 	}	
@@ -251,7 +250,7 @@ int simulate()
 		return EXIT_FAILURE;
 	}
 
-	SDL_Texture * mapTexture = loadTexture("../Images/Photoshop/terrain.png", renderer);
+	SDL_Texture * mapTexture = loadTexture("../Images/terrain2.png", renderer);
 	if(!mapTexture)
 	{
 		SDL_DestroyTexture(exitButton);
@@ -283,7 +282,7 @@ int simulate()
 		carClips[i].h = CAR_HEIGHT;
 	}
 
-	SDL_Rect leftTopWallArea[NUMB_LEFT_TOP_WALL];
+	/*SDL_Rect leftTopWallArea[NUMB_LEFT_TOP_WALL];
 	for(int i = 1; i <= NUMB_LEFT_TOP_WALL; ++i)
 	{
 		leftTopWallArea[i - 1].x = i * FIRST_LEFT_TOP_WALL_X + (i - 1) * BLOCK_WIDTH;
@@ -335,20 +334,24 @@ int simulate()
 		rightBottomWallShiftArea[i - 1].y = i * FIRST_RIGHT_BOTTOM_WALL_Y + (i - 1) * BLOCK_HEIGHT;
 		rightBottomWallShiftArea[i - 1].w = BLOCK_WIDTH;
 		rightBottomWallShiftArea[i - 1].h = BLOCK_HEIGHT;
-	}
+	}*/
 
 	bool fluideSelect = false;
 	bool chargeSelect = false;
 	bool exitSelect = false;
 
-	Vehicle v = newVehicle(NORTH, ENTER_POINT_X, ENTER_POINT_Y, 10, LEFT, CAR, ACTIVE);
+	Vehicle v = newVehicle(NORTH, ENTER_POINT_X, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
 
 	Uint32 frameStart, frameTime;
 	while(!SDL_QuitRequested())
 	{
 		frameStart = SDL_GetTicks();
 		SDL_Event event;
-		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect, &v, leftTopWallArea, NUMB_LEFT_TOP_WALL);
+		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect);
+		if(fluideSelect)
+			moveVehicle(&v);
+		printf("(%d, %d)\n", v->posx, v->posy);
+
 		if(exitSelect) goto destroyer;
 
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
