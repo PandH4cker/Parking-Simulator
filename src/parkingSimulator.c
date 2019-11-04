@@ -192,6 +192,57 @@ void displayMenu(SDL_Renderer * renderer, SDL_Texture * background, SDL_Texture 
 	renderTexture(exitButton, renderer, EXIT_BUTTON_X, EXIT_BUTTON_Y, NULL);
 }
 
+void displayCar(Vehicle v, SDL_Texture * carAllTexture, SDL_Renderer * renderer, SDL_Rect carClips[CAR_CLIPS])
+{
+	if(!v) return;
+	if(v->currentDirection != v->previousDirection)
+		switch(v->previousDirection)
+		{
+			case NORTH:
+				if(v->currentDirection == EAST)
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
+				else
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
+				break;
+			case SOUTH:
+				if(v->currentDirection == EAST)
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
+				else
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
+				break;
+			case EAST:
+				if(v->currentDirection == NORTH)
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
+				else
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
+				break;
+			case WEST:
+				if(v->currentDirection == NORTH)
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
+				else
+					renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
+				break;
+		}
+	else
+		switch(v->currentDirection)
+		{
+			case NORTH:
+				renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
+				break;
+			case SOUTH:
+				renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
+				break;
+			case EAST:
+				renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
+				break;
+			case WEST:
+				renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
+				break;
+		}
+
+	if(v->next) displayCar(v->next, carAllTexture, renderer, carClips);
+}
+
 
 int simulate()
 {
@@ -340,7 +391,9 @@ int simulate()
 	bool chargeSelect = false;
 	bool exitSelect = false;
 
-	Vehicle v = newVehicle(NORTH, ENTER_POINT_X, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	Vehicle v = newVehicleList();
+	v = addVehicle(v, NORTH, ENTER_POINT_X, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
 
 	Uint32 frameStart, frameTime;
 	while(!SDL_QuitRequested())
@@ -350,6 +403,7 @@ int simulate()
 		updateEvents(&event, &fluideSelect, &chargeSelect, &exitSelect);
 		if(fluideSelect)
 			moveVehicle(&v);
+
 		printf("(%d, %d)\n", v->posx, v->posy);
 
 		if(exitSelect) goto destroyer;
@@ -363,51 +417,7 @@ int simulate()
 		else
 		{
 			renderTexture(mapTexture, renderer, 0, 0, NULL);
-			if(v->currentDirection != v->previousDirection)
-				switch(v->previousDirection)
-				{
-					case NORTH:
-						if(v->currentDirection == EAST)
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
-						else
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
-						break;
-					case SOUTH:
-						if(v->currentDirection == EAST)
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
-						else
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
-						break;
-					case EAST:
-						if(v->currentDirection == NORTH)
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[1]);
-						else
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[3]);
-						break;
-					case WEST:
-						if(v->currentDirection == NORTH)
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[7]);
-						else
-							renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[5]);
-						break;
-				}
-			else
-				switch(v->currentDirection)
-				{
-					case NORTH:
-						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[0]);
-						break;
-					case SOUTH:
-						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[4]);
-						break;
-					case EAST:
-						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[2]);
-						break;
-					case WEST:
-						renderTexture(carAllTexture, renderer, v->posx, v->posy, &carClips[6]);
-						break;
-
-				}
+			displayCar(v, carAllTexture, renderer, carClips);		
 		}
 
 		SDL_RenderPresent(renderer);
@@ -427,6 +437,6 @@ int simulate()
 		SDL_DestroyTexture(textParkingSimulator);
 		SDL_DestroyTexture(background);
 		cleanUp(window, renderer);
-		free(v);
+		freeVehicleList(v);
 		return EXIT_SUCCESS;
 }

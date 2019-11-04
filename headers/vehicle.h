@@ -22,8 +22,14 @@
 #define FIRST_PP_X 1685
 #define FIRST_PP_Y 635
 
+#define SEC_PP_X 1685
+#define SEC_PP_Y 565
+
 #define FIRST_PLACE_X 1430
 #define FIRST_PLACE_Y 630
+
+#define SEC_PLACE_X 1430
+#define SEC_PLACE_Y 560
 
 #define NORTH 'N'
 #define SOUTH 'S'
@@ -53,6 +59,7 @@ typedef struct NodeVehicleElement
 	struct NodeVehicleElement * next;
 }NodeVehicleElement, * Vehicle;
 
+Vehicle newVehicleList(void);
 Vehicle newVehicle(char direction, int posx, int posy, 
 				   int vitesse, char alignement, char type, char etat);
 Vehicle addVehicle(Vehicle v, 
@@ -66,4 +73,5 @@ bool isEmpty(Vehicle v);
 bool isAnObstacles(SDL_Rect * obstacles, int size, int x, int y);
 bool isInRegion(int x, int y, int xInf, int xSup, int yInf, int ySup);
 bool isBetween(int x, int y, int x2, int x3, int y2, int y3);
+void freeVehicleList(Vehicle v);
 #endif

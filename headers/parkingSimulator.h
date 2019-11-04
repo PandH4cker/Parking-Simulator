@@ -40,6 +40,7 @@ void cleanUp(SDL_Window * window, SDL_Renderer * renderer);
 void updateEvents(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect);
 void handleMenuButtonsEvent(SDL_Event * event, bool * fluideSelect, bool * chargeSelect, bool * exitSelect);
 void displayMenu(SDL_Renderer * renderer, SDL_Texture * background, SDL_Texture * textParkingSimulator, SDL_Texture * fluideButton, SDL_Texture * chargeButton, SDL_Texture * exitButton);
+void displayCar(Vehicle v, SDL_Texture * carAllTexture, SDL_Renderer * renderer, SDL_Rect carClips[CAR_CLIPS]);
 int simulate();
 
 #endif
