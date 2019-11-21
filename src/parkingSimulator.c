@@ -394,6 +394,24 @@ int simulate()
 	Vehicle v = newVehicleList();
 	v = addVehicle(v, NORTH, ENTER_POINT_X, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
 	v = addVehicle(v, NORTH, ENTER_POINT_X + 500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 1000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 1500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 2000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 2500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 3000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 3500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 4000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 4500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 5000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 5500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 6000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 6500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 7000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 7500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 8000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 8500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 9000, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
+	v = addVehicle(v, NORTH, ENTER_POINT_X + 9500, ENTER_POINT_Y, 5, LEFT, CAR, ACTIVE);
 
 	Uint32 frameStart, frameTime;
 	while(!SDL_QuitRequested())
@@ -404,7 +422,7 @@ int simulate()
 		if(fluideSelect)
 			moveVehicle(&v);
 
-		printf("(%d, %d)\n", v->posx, v->posy);
+		//printf("(%d, %d)\n", v->posx, v->posy);
 
 		if(exitSelect) goto destroyer;
 

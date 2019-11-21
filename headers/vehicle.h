@@ -25,11 +25,41 @@
 #define SEC_PP_X 1685
 #define SEC_PP_Y 565
 
+#define THIR_PP_X 1685
+#define THIR_PP_Y 495
+
+#define FOUR_PP_X 1685
+#define FOUR_PP_Y 425
+
+#define FIF_PP_X 1685
+#define FIF_PP_Y 355
+
+#define FIF_PP_X 1685
+#define FIF_PP_Y 355
+
+#define SIX_PP_X 1685
+#define SIX_PP_Y 285
+
 #define FIRST_PLACE_X 1430
 #define FIRST_PLACE_Y 630
 
 #define SEC_PLACE_X 1430
 #define SEC_PLACE_Y 560
+
+#define THIR_PLACE_X 1430
+#define THIR_PLACE_Y 490
+
+#define FOUR_PLACE_X 1430
+#define FOUR_PLACE_Y 420
+
+#define FIF_PLACE_X 1430
+#define FIF_PLACE_Y 350
+
+#define SIX_PLACE_X 1685
+#define SIX_PLACE_Y 280
+
+#define DELIMITER_INT 80
+#define DELIMITER_PP 285
 
 #define NORTH 'N'
 #define SOUTH 'S'

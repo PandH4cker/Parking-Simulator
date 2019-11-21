@@ -123,15 +123,70 @@ void changeVehiclePosition(Vehicle * v, SDL_Keycode key)
 void moveVehicle(Vehicle * v)
 {
 	if(!v) return;
+
 	//Rentre dans le Parking
-	if(isBetween((*v)->posx - 5, (*v)->posy, FIRST_INT_X, ENTER_POINT_X + 500, FIRST_INT_Y, ENTER_POINT_Y))
+	if(isBetween((*v)->posx - 5, (*v)->posy, FIRST_INT_X, ENTER_POINT_X + 9500, FIRST_INT_Y, ENTER_POINT_Y))
 	{
 		changeVehicleDirection(v, SDLK_LEFT);
 		changeVehiclePosition(v, SDLK_LEFT);
 	}
 
+	//for(int pp_y = FIRST_PP_Y; pp_y > DELIMITER_PP; pp_y -= 70)
+
+	for(int int_x = FIRST_INT_X; int_x > DELIMITER_INT; int_x -= 535)
+	{
+		if((*v)->posx == int_x && (*v)->posy == FIRST_INT_Y)
+		{
+			// Continue jusque l'intersection 2
+			/*if(rand() % 2 == 0)
+			{
+				changeVehicleDirection(v, SDLK_LEFT);
+				changeVehiclePosition(v, SDLK_LEFT);
+				changeVehicleDirection(v, SDLK_LEFT);
+				changeVehiclePosition(v, SDLK_LEFT);
+			}
+
+			// Continue jusque la place 1
+			else
+			{*/
+				changeVehicleDirection(v, SDLK_UP);
+				changeVehiclePosition(v, SDLK_UP);
+				changeVehicleDirection(v, SDLK_UP);
+				changeVehiclePosition(v, SDLK_UP);
+			//}			
+		}
+	}
+
+	for(int pp_y = FIRST_PP_Y; pp_y > DELIMITER_PP; pp_y -= 70)
+	{
+		if((*v)->posx == FIRST_PP_X && (*v)->posy == pp_y)
+		{
+			//Se gare à la place 1
+			if(rand() % 2 == 0)
+			{
+				changeVehicleDirection(v, SDLK_LEFT);
+				changeVehiclePosition(v, SDLK_LEFT);
+				changeVehicleDirection(v, SDLK_LEFT);
+				changeVehiclePosition(v, SDLK_LEFT);	
+			}
+
+			// Continue jusque la place 2
+			else
+			{
+				changeVehicleDirection(v, SDLK_UP);
+				changeVehiclePosition(v, SDLK_UP);
+				changeVehicleDirection(v, SDLK_UP);
+				changeVehiclePosition(v, SDLK_UP);
+				changeVehicleDirection(v, SDLK_UP);
+				changeVehiclePosition(v, SDLK_UP);
+			}
+		}	
+	}
+
+	//for(int place_y = FIRST_PLACE_Y; place_y >  DELIMITER_PLACE; place_y -= 70)
+
 	//Choix intersection 1
-	if((*v)->posx == FIRST_INT_X && (*v)->posy == FIRST_INT_Y)
+	/*if((*v)->posx == FIRST_INT_X && (*v)->posy == FIRST_INT_Y)
 	{
 		// Continue jusque l'intersection 2
 		if(rand() % 2 == 0)
@@ -150,10 +205,10 @@ void moveVehicle(Vehicle * v)
 			changeVehicleDirection(v, SDLK_UP);
 			changeVehiclePosition(v, SDLK_UP);
 		}
-	}
+	}*/
 
 	//Choix intersection place 1
-	if((*v)->posx == FIRST_PP_X && (*v)->posy == FIRST_PP_Y)
+	/*if((*v)->posx == FIRST_PP_X && (*v)->posy == FIRST_PP_Y)
 	{
 		// Se gare à la place 1
 		if(rand() % 2 == 0)
@@ -172,26 +227,26 @@ void moveVehicle(Vehicle * v)
 			changeVehicleDirection(v, SDLK_UP);
 			changeVehiclePosition(v, SDLK_UP);
 		}
-	}
+	}*/
 
 	//Choix intersection place 2
-	if((*v)->posx == SEC_PP_X && (*v)->posy == SEC_PP_Y)
+	/*if((*v)->posx == SEC_PP_X && (*v)->posy == SEC_PP_Y)
 	{
 		changeVehicleDirection(v, SDLK_LEFT);
 		changeVehiclePosition(v, SDLK_LEFT);
 		changeVehicleDirection(v, SDLK_LEFT);
 		changeVehiclePosition(v, SDLK_LEFT);
-	}
+	}*/
 
 	//Avance jusqu'à la deuxieme intersection
-	else if(isBetween((*v)->posx, (*v)->posy, SEC_INT_X, FIRST_INT_X, SEC_INT_Y, FIRST_INT_Y))
+	/*if(isBetween((*v)->posx, (*v)->posy, SEC_INT_X, FIRST_INT_X, SEC_INT_Y, FIRST_INT_Y))
 	{
 		changeVehicleDirection(v, SDLK_LEFT);
 		changeVehiclePosition(v, SDLK_LEFT);
-	}
+	}*/
 
 	//Avance jusqu'à l'intersection avec la première place
-	else if(isBetween((*v)->posx, (*v)->posy, FIRST_PP_X, FIRST_INT_X, FIRST_PP_Y, FIRST_INT_Y))
+	if(isBetween((*v)->posx, (*v)->posy, FIRST_PP_X, FIRST_INT_X, FIRST_PP_Y, FIRST_INT_Y))
 	{
 		changeVehicleDirection(v, SDLK_UP);
 		changeVehiclePosition(v, SDLK_UP);
@@ -215,6 +270,75 @@ void moveVehicle(Vehicle * v)
 	{
 		changeVehicleDirection(v, SDLK_LEFT);
 		changeVehiclePosition(v, SDLK_LEFT);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, THIR_PP_X, SEC_PP_X, THIR_PP_Y, SEC_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_UP);
+		changeVehiclePosition(v, SDLK_UP);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, THIR_PLACE_X, THIR_PP_X, THIR_PLACE_Y, THIR_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_LEFT);
+		changeVehiclePosition(v, SDLK_LEFT);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, THIR_PP_X, SEC_PP_X, THIR_PP_Y, SEC_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_UP);
+		changeVehiclePosition(v, SDLK_UP);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, THIR_PLACE_X, THIR_PP_X, THIR_PLACE_Y, THIR_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_LEFT);
+		changeVehiclePosition(v, SDLK_LEFT);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, FOUR_PP_X, THIR_PP_X, FOUR_PP_Y, THIR_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_UP);
+		changeVehiclePosition(v, SDLK_UP);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, FOUR_PLACE_X, FOUR_PP_X, FOUR_PLACE_Y, FOUR_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_LEFT);
+		changeVehiclePosition(v, SDLK_LEFT);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, FIF_PP_X, FOUR_PP_X, FIF_PP_Y, FOUR_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_UP);
+		changeVehiclePosition(v, SDLK_UP);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, FIF_PLACE_X, FIF_PP_X, FIF_PLACE_Y, FIF_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_LEFT);
+		changeVehiclePosition(v, SDLK_LEFT);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, SIX_PP_X, FIF_PP_X, SIX_PP_Y, FIF_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_UP);
+		changeVehiclePosition(v, SDLK_UP);
+	}
+
+	else if(isBetween((*v)->posx, (*v)->posy, SIX_PLACE_X, SIX_PP_X, SIX_PLACE_Y, SIX_PP_Y))
+	{
+		changeVehicleDirection(v, SDLK_LEFT);
+		changeVehiclePosition(v, SDLK_LEFT);
+	}
+
+	for(int int_x = FIRST_INT_X; int_x > DELIMITER_INT; int_x -= 535)
+	{
+		if(isBetween((*v)->posx, (*v)->posy, int_x - 535, int_x, FIRST_INT_Y, FIRST_INT_Y))
+		{
+			changeVehicleDirection(v, SDLK_LEFT);
+			changeVehiclePosition(v, SDLK_LEFT);
+		}
 	}
 
 	if((*v)->next)
