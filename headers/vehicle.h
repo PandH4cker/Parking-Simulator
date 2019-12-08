@@ -29,16 +29,13 @@
 #define THIR_PP_Y 495
 
 #define FOUR_PP_X 1685
-#define FOUR_PP_Y 425
+#define FOUR_PP_Y 429
 
 #define FIF_PP_X 1685
-#define FIF_PP_Y 355
-
-#define FIF_PP_X 1685
-#define FIF_PP_Y 355
+#define FIF_PP_Y 360
 
 #define SIX_PP_X 1685
-#define SIX_PP_Y 285
+#define SIX_PP_Y 310
 
 #define FIRST_PLACE_X 1430
 #define FIRST_PLACE_Y 630
@@ -50,13 +47,13 @@
 #define THIR_PLACE_Y 490
 
 #define FOUR_PLACE_X 1430
-#define FOUR_PLACE_Y 420
+#define FOUR_PLACE_Y 424
 
 #define FIF_PLACE_X 1430
-#define FIF_PLACE_Y 350
+#define FIF_PLACE_Y 355
 
 #define SIX_PLACE_X 1685
-#define SIX_PLACE_Y 280
+#define SIX_PLACE_Y 305
 
 #define DELIMITER_INT 80
 #define DELIMITER_PP 285

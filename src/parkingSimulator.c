@@ -333,6 +333,25 @@ int simulate()
 		carClips[i].h = CAR_HEIGHT;
 	}
 
+	/*Place rightPlaces[6];
+	for(int i = 0; i < 6; ++i)
+	{
+		rightPlaces[i].posX = 1430;
+		rightPlaces[i].posY = 645 - 65 * i;
+		rightPlaces[i].isFree = true;
+		rightPlaces[i].posXLight = 1380;
+		rightPlaces[i].posYLight = 635 - 70 * i;
+	}
+
+	Place firstIntRightPlaces[6];
+	for(int i = 0; i < 6; ++i)
+	{
+		firstIntRightPlaces[i].posX = 1365;
+		firstIntRightPlaces[i].posY = 645 - 65 * i;
+		firstIntRightPlaces[i].isFree = true;
+		firstIntRightPlaces[i].posXLight = 
+	}*/
+
 	/*SDL_Rect leftTopWallArea[NUMB_LEFT_TOP_WALL];
 	for(int i = 1; i <= NUMB_LEFT_TOP_WALL; ++i)
 	{

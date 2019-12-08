@@ -138,7 +138,7 @@ void moveVehicle(Vehicle * v)
 		if((*v)->posx == int_x && (*v)->posy == FIRST_INT_Y)
 		{
 			// Continue jusque l'intersection 2
-			/*if(rand() % 2 == 0)
+			if(rand() % 3 == 0)
 			{
 				changeVehicleDirection(v, SDLK_LEFT);
 				changeVehiclePosition(v, SDLK_LEFT);
@@ -148,12 +148,12 @@ void moveVehicle(Vehicle * v)
 
 			// Continue jusque la place 1
 			else
-			{*/
+			{
 				changeVehicleDirection(v, SDLK_UP);
 				changeVehiclePosition(v, SDLK_UP);
 				changeVehicleDirection(v, SDLK_UP);
 				changeVehiclePosition(v, SDLK_UP);
-			//}			
+			}			
 		}
 	}
 
@@ -162,7 +162,7 @@ void moveVehicle(Vehicle * v)
 		if((*v)->posx == FIRST_PP_X && (*v)->posy == pp_y)
 		{
 			//Se gare à la place 1
-			if(rand() % 2 == 0)
+			if(rand() % 3 == 0)
 			{
 				changeVehicleDirection(v, SDLK_LEFT);
 				changeVehiclePosition(v, SDLK_LEFT);
